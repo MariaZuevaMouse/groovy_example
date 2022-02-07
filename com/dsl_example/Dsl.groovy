@@ -1,10 +1,14 @@
 package com.dsl_example
 
+import static groovy.lang.Closure.DELEGATE_ONLY
+
+//import static groovy.lang.Closure.DELEGATE_ONLY
+
 class Dsl {
-    static void pipeline(final Closure closure) {
+    static void pipeline(@DelegatesTo(value = PipelineDsl, strategy = DELEGATE_ONLY) final Closure closure) {
         final PipelineDsl dsl = new PipelineDsl()
         closure.delegate = dsl
-        closure.resolveStrategy = Closure.DELEGATE_ONLY
+        closure.resolveStrategy = DELEGATE_ONLY
         closure.call()
     }
 }
