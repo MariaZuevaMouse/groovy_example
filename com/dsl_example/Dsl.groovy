@@ -1,5 +1,8 @@
 package com.dsl_example
 
+import java.util.concurrent.ConcurrentHashMap
+
+import static groovy.lang.Closure.DELEGATE_FIRST
 import static groovy.lang.Closure.DELEGATE_ONLY
 
 //import static groovy.lang.Closure.DELEGATE_ONLY
@@ -15,19 +18,23 @@ class Dsl {
 
 class PipelineDsl {
     final Placeholder any = Placeholder.ANY
+
+    static final ConcurrentHashMap<String, String> env = [:] as ConcurrentHashMap
+
     void agent(final Placeholder any) {
         println "Running pipeline using any available agent"
     }
 
-    void environment(final Closure closure) {
-
+    void environment(@DelegatesTo(value = Map, strategy = DELEGATE_FIRST) final Closure closure) {
+        env.with(closure)
+        println env
     }
 
     void stages(final Closure closure) {
 
     }
 
-    enum  Placeholder{
+    enum Placeholder {
         ANY
     }
 }
