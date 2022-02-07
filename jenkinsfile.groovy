@@ -17,17 +17,18 @@ pipeline {
         SOME_STRING = "foobar"
     }
 
-    stages{
-        stage("Build"){
-            steps{
+    stages {
+        stage("Build") {
+            steps { env ->
                 sh "ls -la"
 //                sh "dir /ad"
                 sh(script: 'date +%Y-%m-%d', returnStdout: false)
                 echo "Groovy rocks!"
+                echo "env.SOME_STRING = ${env.SOME_STRING}"
             }
         }
-        stage("Test"){
-            steps{
+        stage("Test") {
+            steps {
 //                sh "mvn -version"
                 sh "ls -la"
             }

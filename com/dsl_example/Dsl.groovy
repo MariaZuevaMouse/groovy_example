@@ -2,6 +2,8 @@ package com.dsl_example
 
 import groovy.transform.NamedParam
 import groovy.transform.NamedParams
+import groovy.transform.stc.ClosureParams
+import groovy.transform.stc.SimpleType
 
 import java.util.concurrent.ConcurrentHashMap
 
@@ -79,12 +81,14 @@ class Stage {
 }
 
 class StageDsl {
-    void steps(@DelegatesTo(value = Steps, strategy = DELEGATE_ONLY) final Closure closure) {
+    void steps(@DelegatesTo(value = Steps, strategy = DELEGATE_ONLY)
+               @ClosureParams(value = SimpleType, options = ["java.util.Map"])
+               final Closure closure) {
         final Steps steps = new Steps()
 
         closure.delegate = steps
         closure.resolveStrategy = DELEGATE_ONLY
-        closure.call()
+        closure.call(PipelineDsl.env)
     }
 }
 
@@ -115,7 +119,7 @@ class Steps {
     }
 
     void echo(final String mesage) {
-        println "[ECHO} ${mesage}"
+        println "[ECHO] ${mesage}"
     }
 }
 
