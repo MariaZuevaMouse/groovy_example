@@ -30,11 +30,40 @@ class PipelineDsl {
         println env
     }
 
-    void stages(final Closure closure) {
+    void stages(@DelegatesTo(value = StagesDsl, strategy = DELEGATE_ONLY)final Closure closure) {
+        final StagesDsl dsl = new StagesDsl()
 
+        closure.delegate = dsl
+        closure.resolveStrategy = DELEGATE_ONLY
+        closure.call()
+
+        println dsl.stages
     }
 
     enum Placeholder {
         ANY
     }
 }
+
+class StagesDsl {
+    protected final List<Stage> stages = []
+
+    void stage(final String name, final Closure closure) {
+        stages << new Stage(name, closure)
+    }
+}
+
+class Stage {
+    final String name
+    final Closure closure
+
+    Stage(String name, Closure closure) {
+        this.name = name
+        this.closure = closure
+    }
+}
+
+
+
+
+
