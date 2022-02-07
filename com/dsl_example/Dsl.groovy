@@ -11,8 +11,8 @@ class Dsl {
 
 class PipelineDsl {
     final Placeholder any = Placeholder.ANY
-    void agent() {
-
+    void agent(final Placeholder any) {
+        println "Running pipeline using any available agent"
     }
 
     void environment(final Closure closure) {
