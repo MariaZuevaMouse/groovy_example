@@ -21,13 +21,15 @@ pipeline {
         stage("Build"){
             steps{
                 sh "ls -la"
+//                sh "dir /ad"
                 sh(script: 'date +%Y-%m-%d', returnStdout: false)
                 echo "Groovy rocks!"
             }
         }
         stage("Test"){
             steps{
-                sh "mvn -version"
+//                sh "mvn -version"
+                sh "ls -la"
             }
         }
     }
