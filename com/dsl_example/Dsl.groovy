@@ -38,6 +38,9 @@ class PipelineDsl {
         closure.call()
 
         println dsl.stages
+        dsl.stages.each {stage ->
+            stage.run()
+        }
     }
 
     enum Placeholder {
@@ -48,7 +51,7 @@ class PipelineDsl {
 class StagesDsl {
     protected final List<Stage> stages = []
 
-    void stage(final String name, final Closure closure) {
+    void stage(final String name, @DelegatesTo(value = StageDsl, strategy = DELEGATE_ONLY)final Closure closure) {
         stages << new Stage(name, closure)
     }
 }
@@ -61,8 +64,36 @@ class Stage {
         this.name = name
         this.closure = closure
     }
-}
 
+    def void run() {
+        println "==> Running stage '${name}'..."
+        final StageDsl dsl = new StageDsl()
+
+        closure.delegate = dsl
+        closure.resolveStrategy = DELEGATE_ONLY
+        closure.call()
+    }
+}
+class StageDsl{
+    void steps(@DelegatesTo(value = Steps, strategy = DELEGATE_ONLY)final Closure closure){
+        final Steps steps = new Steps()
+
+        closure.delegate = steps
+        closure.resolveStrategy = DELEGATE_ONLY
+        closure.call()
+    }
+}
+class Steps{
+    void sh(final String scropt){
+
+    }
+    Object sh(final Map param){
+
+    }
+    void echo(final String mesage){
+
+    }
+}
 
 
 
