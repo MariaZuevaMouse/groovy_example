@@ -10,6 +10,7 @@ class Dsl {
 }
 
 class PipelineDsl {
+    final Placeholder any = Placeholder.ANY
     void agent() {
 
     }
@@ -20,5 +21,9 @@ class PipelineDsl {
 
     void stages(final Closure closure) {
 
+    }
+
+    enum  Placeholder{
+        ANY
     }
 }
