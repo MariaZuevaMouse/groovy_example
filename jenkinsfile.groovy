@@ -1,4 +1,4 @@
-//import static com.github.wololock.groovy.Dsl.pipeline
+import static com.dsl_example.Dsl.pipeline
 
 println '''
    ___                                ___ _            _ _            
