@@ -1,5 +1,8 @@
 package com.dsl_example
 
+import groovy.transform.NamedParam
+import groovy.transform.NamedParams
+
 import java.util.concurrent.ConcurrentHashMap
 
 import static groovy.lang.Closure.DELEGATE_FIRST
@@ -30,7 +33,7 @@ class PipelineDsl {
         println env
     }
 
-    void stages(@DelegatesTo(value = StagesDsl, strategy = DELEGATE_ONLY)final Closure closure) {
+    void stages(@DelegatesTo(value = StagesDsl, strategy = DELEGATE_ONLY) final Closure closure) {
         final StagesDsl dsl = new StagesDsl()
 
         closure.delegate = dsl
@@ -38,7 +41,7 @@ class PipelineDsl {
         closure.call()
 
         println dsl.stages
-        dsl.stages.each {stage ->
+        dsl.stages.each { stage ->
             stage.run()
         }
     }
@@ -51,7 +54,7 @@ class PipelineDsl {
 class StagesDsl {
     protected final List<Stage> stages = []
 
-    void stage(final String name, @DelegatesTo(value = StageDsl, strategy = DELEGATE_ONLY)final Closure closure) {
+    void stage(final String name, @DelegatesTo(value = StageDsl, strategy = DELEGATE_ONLY) final Closure closure) {
         stages << new Stage(name, closure)
     }
 }
@@ -74,8 +77,9 @@ class Stage {
         closure.call()
     }
 }
-class StageDsl{
-    void steps(@DelegatesTo(value = Steps, strategy = DELEGATE_ONLY)final Closure closure){
+
+class StageDsl {
+    void steps(@DelegatesTo(value = Steps, strategy = DELEGATE_ONLY) final Closure closure) {
         final Steps steps = new Steps()
 
         closure.delegate = steps
@@ -83,14 +87,34 @@ class StageDsl{
         closure.call()
     }
 }
-class Steps{
-    void sh(final String scropt){
+
+class Steps {
+    void sh(final String script) {
+        sh(script: script, returnStdout: false)
+    }
+
+    Object sh(@NamedParams([
+            @NamedParam(value = "script", type = String, required = true),
+            @NamedParam(value = "returnStdout", type = Boolean)
+
+    ]) final Map param) {
+        final  Process p = param.script.toString().execute()
+        p.waitFor()
+
+        println "+ ${param.script}"
+
+        if(p.exitValue() == 0){
+            if(param.returnStdout){
+                return  p.text
+            }
+            println p.text
+        }else {
+            println p.err.text
+        }
 
     }
-    Object sh(final Map param){
 
-    }
-    void echo(final String mesage){
+    void echo(final String mesage) {
         println "[ECHO} ${mesage}"
     }
 }
