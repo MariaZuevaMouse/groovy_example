@@ -91,7 +91,7 @@ class Steps{
 
     }
     void echo(final String mesage){
-
+        println "[ECHO} ${mesage}"
     }
 }
 
