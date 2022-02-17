@@ -1,0 +1,8 @@
+task helloSimple {
+    println "Hello, Simple World!"
+}
+task helloWithDepends (dependsOn: 'helloSimple'){
+    println "Hello, Dependent World!"
+}
+
+//$gradle -q -b scripts/gradle4/hello.gradle helloWithDepends

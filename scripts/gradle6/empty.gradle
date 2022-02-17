@@ -1,0 +1,12 @@
+apply plugin: "groovy"
+apply plugin: "idea"
+apply plugin: "eclipse"
+repositories {
+    mavenCentral()
+}
+dependencies {
+    compile "org.codehaus.groovy:groovy-all:2.4.4"
+    testCompile "org.spockframework:spock-core:0.7-groovy-2.0"
+}
+
+//$gradle -b scripts/gradle6/empty.gradle tasks --all

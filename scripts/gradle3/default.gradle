@@ -1,0 +1,9 @@
+defaultTasks 'clean', 'runTests'
+task clean {
+    println 'Cleaning'
+}
+task runTests {
+    println 'Running Tests'
+}
+
+//$gradle -q -b scripts/gradle3/default.gradle

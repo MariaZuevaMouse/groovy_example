@@ -1,0 +1,14 @@
+task clean {
+    println 'Cleaning'
+}
+task runTests {
+    println 'Running Tests'
+}
+task buildApplication (dependsOn: 'clean') {
+    println 'Building Application'
+}
+task deploy (dependsOn: ['runTests','buildApplication']) {
+    println 'Deploying'
+}
+
+//$gradle -q -b scripts/gradle5/default.gradle deploy

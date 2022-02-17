@@ -1,0 +1,9 @@
+task actionsInOrder << {
+    println "The first will be first"
+}
+actionsInOrder << {
+    println "The last will be last"
+}
+
+//$gradle -q -b scripts/gradle2/default.gradle actionsInOrder
+//gradle -q -b scripts/gardle1/hello.gradle confused

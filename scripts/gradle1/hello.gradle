@@ -1,0 +1,18 @@
+
+task confused {
+    doFirst {
+        println "The First doFirst will be last"
+    }
+    doFirst {
+        println "The last doFirst will be first"
+    }
+    doLast {
+        println "The first doLast will be first"
+    }
+    doLast {
+        println "The last doLast will be last"
+    }
+}
+
+//to run
+//$gradle -q -b scripts/gradle1/hello.gradle confused
